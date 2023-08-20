@@ -77,6 +77,7 @@
                         <li><a href="#6.1">MutationObserver: наблюдатель за изменениями</a></li>
                         <li><a href="#6.2">Selection и Range</a></li>
                         <li><a href="#6.3">Событийный цикл: микрозадачи и макрозадачи</a></li>
+                        <li><a href="#6.4">Работа в canvas</a></li>
                     </ul>
                 </li>
 			</ul>
@@ -5232,6 +5233,75 @@ Web Workers
 мы можем использовать Web Workers. Web Workers не имеют доступа к DOM, поэтому 
 основное их применение – вычисления. Они позволяют задействовать несколько 
 ядер процессора одновременно.
+
+<p class='new-chapter' id="6.4">Работа в canvas</p>
+Создание элемента в HTML:
+&lt;canvas height='320' width='480' id='example'>Обновите браузер&lt;/canvas>
+
+
+Прямоугольники
+strokeRect(x, y, width, height) // Рисует прямоугольник
+fillRect(x, y, width, height)   // Рисует закрашенный прямоугольник
+clearRect(x, y, width, height)  // Очищает заданную область
+
+x, y задают левый верхний угол прямоугольника
+
+
+<h3>Линии и дуги</h3>
+beginPath() - используется что бы «начать» серию действий описывающих отрисовку фигуры
+closePath() - соединяет начальную и конечную точки и завершает рисование (не обязателен)
+stroke() - обводит фигуру линиями. Завершает рисование
+fill() - заливает фигуру. Завершает рисование
+
+moveTo(x, y) // перемещает "курсор" в позицию x, y и делает её текущей
+lineTo(x, y) // ведёт линию из текущей позиции в указанную, и делает в последствии 
+	указанную текущей
+arc(x, y, radius, startAngle, endAngle, anticlockwise) // рисование дуги, где x и y 
+центр окружности, далее начальный и конечный угол, последний параметр указывает 
+направление
+
+<h3>Задание цвета и толщины</h3>
+lineWidth = width - задает толщину линий
+
+fillStyle = 'color' - определяет цвет заливки 
+strokeStyle = 'color' - определяет цвет линий 
+
+Цвет задается точно так же, как и в css.
+
+Изменение размеров и поворот
+scale(dx, dy) - изменение по оси x и y
+rotate(angle) - поворот на degree * Math.PI / 180 градусов относительно начала холста
+
+<h3>Работа с текстом</h3>
+font = 'font-weight font-size font-family'
+fillText('text', x, y) - отрисовать заданныый текст по координатам x и y
+textAlign = 'center' - текст будет рисоваться не справа от заданных координат, а по центру
+
+let grad = createLinearGradient(x0, y0, x1, y1) - создание линейного градиента
+grad.addColorStop(0, 'color1')
+grad.addColorStop(.3, 'color2')
+grad.addColorStop(1, 'color3')
+fillStyle = grad - назначаем цвет текста
+
+[x0, y0], [x1, y1] - координаты начальных и конечных точек
+
+<h3>Изображения</h3>
+let img = new Image() - создание нового объекта изображения
+img.src = 'image.png' - путь к изображению
+drawImage(image, dx, dy) - фукнция для отрисовки (где image - изображение)
+
+    Пример:	
+	let pic = new Image();
+	pic.src    = 'http://habrahabr.ru/i/nocopypast.png';
+	pic.onload = function() {
+	  ctx.drawImage(pic, 0, 0);  // Рисуем изображение от точки с координатами 0, 0
+	}
+
+drawImage(image, dx, dy, dWidth, dHeight) // width и height меняют ширину и высоту изображения
+
+drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+// sx, sy, sWidth, sHeight указывают параметры фрагмента на изображении-источнике
+// dx, dy, dWidth, dHeight ответственны за координаты отрисовки фрагмента на холсте
 
 </pre>
 </main>
